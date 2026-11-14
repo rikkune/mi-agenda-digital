@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Iniciar sesión · Mi agenda digital</title>
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.webmanifest') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/icons/favicon-32.png') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/icons/icon-192.png') }}">
+  <meta name="theme-color" content="#e989b4">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ui.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+  <script src="{{ url_for('static', filename='js/fondo.js') }}"></script>
+</head>
+<body class="login-page">
+  <main class="login-wrap">
+    <form class="login-card" method="post" action="{{ url_for('auth.login') }}" id="loginForm" novalidate>
+      <div class="login-brand">
+        <b class="logo">M</b>
+        <div><strong>Mi agenda</strong><small>CURSO 2026–2027</small></div>
+      </div>
+
+      <h1>Iniciar sesión</h1>
+      <p class="login-lead">Entra con tu usuario y contraseña del <strong>Aula Virtual de MEDAC</strong>. Son los mismos que se usan para sincronizar tus entregas.</p>
+
+      {% if error %}
+      <p class="form-error" role="alert">{{ error }}</p>
+      {% endif %}
+
+      <div class="field">
+        <label for="username">Usuario de MEDAC</label>
+        <input id="username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required value="{{ username }}" {% if not username %}autofocus{% endif %}>
+      </div>
+
+      <div class="field">
+        <label for="password">Contraseña</label>
+        <div class="password-row">
+          <input id="password" name="password" type="password" autocomplete="current-password" required {% if username %}autofocus{% endif %}>
+          <button type="button" class="ghost small" id="togglePassword" aria-controls="password" aria-pressed="false">Mostrar</button>
+        </div>
+      </div>
+
+      <div class="field check">
+        <input id="remember" name="remember" type="checkbox" value="1" {% if remember %}checked{% endif %}>
+        <label for="remember">Mantener la sesión iniciada en este equipo</label>
+      </div>
+
+      <button type="submit" class="primary login-submit" id="loginSubmit">Entrar</button>
+
+      <p class="login-note">La contraseña se guarda cifrada con tu usuario de Windows y solo en este ordenador. Al cerrar sesión se borra.</p>
+    </form>
+  </main>
+  <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>

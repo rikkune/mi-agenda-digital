@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mi agenda digital 2026–2027</title>
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.webmanifest') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/icons/favicon-32.png') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/icons/icon-192.png') }}">
+  <meta name="theme-color" content="#e989b4">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/extra.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ui.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+  <script src="{{ url_for('static', filename='js/fondo.js') }}"></script>
+</head>
+<body>
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16.5" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/><path d="m8 12 3 3 5-6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+    <symbol id="i-eval" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 2.5h6v3H9zM8.5 11h7M8.5 15h5"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"/><path d="M16 4.8a3.3 3.3 0 0 1 0 6.4M18.5 14.8c1.6.7 2.6 2.4 3 5.2"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-4-4L4 16z"/><path d="m14 6 4 4"/></symbol>
+    <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 1 1 12 0v5.5l1.5 2H4.5z"/><path d="M10 21h4"/></symbol>
+    <symbol id="i-plus"viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-1 .8-1.7 1.8-1.7H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11" r="1.2"/><circle cx="10" cy="7" r="1.2"/><circle cx="15" cy="7.5" r="1.2"/></symbol>
+    <symbol id="i-sync" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3.5V8h4.5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 20.5V16h-4.5"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-copies" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11m-5-5 5 5 5-5M5 20h14"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 16V5m-5 5 5-5 5 5M5 20h14"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/><path d="M10 16.5 5.5 12 10 7.5M5.5 12H16"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></symbol>
+  </svg>
+  <div class="backdrop" id="backdrop" hidden></div>
+  <div class="shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <b class="logo">M</b>
+        <div><strong>Mi agenda</strong><small>CURSO 2026–2027</small></div>
+      </div>
+      <p class="label">ESPACIO DE TRABAJO</p>
+      <nav>
+        <button class="nav active" data-view="inicio"><svg class="ico"><use href="#i-home"/></svg>Inicio</button>
+        <button class="nav" data-view="calendario"><svg class="ico"><use href="#i-cal"/></svg>Calendario</button>
+        <button class="nav" data-view="tareas"><svg class="ico"><use href="#i-check"/></svg>Tareas y entregas</button>
+        <button class="nav" data-view="recordatorios"><svg class="ico"><use href="#i-bell"/></svg>Recordatorios<b class="nav-count" id="reminderNavCount" hidden></b></button>
+        <button class="nav" data-view="horario"><svg class="ico"><use href="#i-clock"/></svg>Mi horario</button>
+      </nav>
+      <p class="label">MIS ASIGNATURAS</p>
+      <nav id="subjectNav"></nav>
+      <p class="label">OTROS</p>
+      <nav>
+        <button class="nav" data-view="evaluaciones"><svg class="ico"><use href="#i-eval"/></svg>Evaluaciones</button>
+        <button class="nav" data-view="tutoria"><svg class="ico"><use href="#i-users"/></svg>Prácticas y tutoría</button>
+        <button class="nav" data-view="notas"><svg class="ico"><use href="#i-pen"/></svg>Notas</button>
+        <button class="nav" data-view="datos"><svg class="ico"><use href="#i-db"/></svg>Copias y datos</button>
+      </nav>
+      <div class="profile">
+        <b>{{ (username or 'P')[:1] | upper }}</b>
+        <span><strong title="{{ username or '' }}">{{ username or 'Mi espacio docente' }}</strong><small>Aula Virtual MEDAC · <span id="appVersion"></span></small></span>
+        <button type="button" class="logout" id="logoutBtn" title="Cerrar sesión" aria-label="Cerrar sesión"><svg class="ico"><use href="#i-logout"/></svg></button>
+      </div>
+    </aside>
+
+    <main>
+      <header>
+        <button id="menu" class="mobile" aria-label="Abrir menú" aria-controls="sidebar" aria-expanded="false"><svg class="ico"><use href="#i-menu"/></svg></button>
+        <span class="crumbs">Mi espacio <span aria-hidden="true">/</span> <strong id="crumb">Inicio</strong></span>
+        <div class="toolbar">
+          <div class="pop-wrap">
+            <button type="button" class="primary small" id="quickAddBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="quickAddMenu" title="Crear algo nuevo">
+              <svg class="ico"><use href="#i-plus"/></svg><span class="hide-sm">Nuevo</span>
+            </button>
+            <div class="popover menu" id="quickAddMenu" role="menu" hidden>
+              <button type="button" role="menuitem" data-quick="task"><i class="dot juego"></i>Tarea o entrega<kbd>T</kbd></button>
+              <button type="button" role="menuitem" data-quick="event"><i class="dot saac"></i>Evento del calendario<kbd>E</kbd></button>
+              <button type="button" role="menuitem" data-quick="reminder"><i class="dot mediacion"></i>Recordatorio<kbd>R</kbd></button>
+              <button type="button" role="menuitem" data-quick="note"><i class="dot apoyo"></i>Nota<kbd>N</kbd></button>
+              <button type="button" role="menuitem" data-quick="tutoring"><i class="dot habilidades"></i>Seguimiento de tutoría<kbd>S</kbd></button>
+              <p class="menu-hint">Pulsa <kbd>/</kbd> para buscar</p>
+            </div>
+          </div>
+          <button type="button" class="ghost icon-only" id="syncBtn" title="Sincronizar con el Aula Virtual">
+            <svg class="ico"><use href="#i-sync"/></svg><span class="hide-sm">Aula Virtual</span>
+          </button>
+          <div class="pop-wrap">
+            <button type="button" class="ghost icon-only" id="fondoBtn" aria-haspopup="true" aria-expanded="false" aria-controls="fondoMenu" title="Cambiar fondo">
+              <svg class="ico"><use href="#i-palette"/></svg><span class="hide-sm">Fondo</span>
+            </button>
+            <div class="popover fondos" id="fondoMenu" hidden>
+              <p class="eyebrow">FONDO DE LA AGENDA</p>
+              <div class="fondo-grid" role="radiogroup" aria-label="Fondo de la agenda">
+                <button type="button" role="radio" data-fondo-opt="crema" class="fondo-opt"><span class="thumb t-crema"></span>Crema</button>
+                <button type="button" role="radio" data-fondo-opt="rosa" class="fondo-opt"><span class="thumb t-rosa"></span>Rosa</button>
+                <button type="button" role="radio" data-fondo-opt="turquesa" class="fondo-opt"><span class="thumb t-turquesa"></span>Turquesa</button>
+                <button type="button" role="radio" data-fondo-opt="liso" class="fondo-opt"><span class="thumb t-liso"></span>Liso</button>
+              </div>
+            </div>
+          </div>
+          <span class="year">Curso 2026 / 2027</span>
+        </div>
+      </header>
+
+      <section id="inicio" class="view active">
+        <div class="welcome">
+          <div>
+            <p class="eyebrow">TU ESPACIO DOCENTE</p>
+            <h1><span id="greeting">¡Hola!</span> <em>✦</em></h1>
+            <p class="muted">Aquí tienes todo lo que necesitas para organizar tu día.</p>
+          </div>
+          <div class="date"><small>HOY</small><b id="today">—</b></div>
+        </div>
+        <div class="stats">
+          <article data-go="tareas" role="button" tabindex="0" title="Ir a tareas"><i><svg class="ico"><use href="#i-check"/></svg></i><span>Tareas pendientes</span><b id="statPending">0</b><small id="statPendingNote">Sin tareas pendientes</small></article>
+          <article data-go="calendario" role="button" tabindex="0" title="Ir al calendario"><i><svg class="ico"><use href="#i-cal"/></svg></i><span>Próximas entregas</span><b id="statUpcoming">0</b><small id="statUpcomingNote">Durante los próximos 7 días</small></article>
+          <article data-go="horario" role="button" tabindex="0" title="Ir a mi horario"><i><svg class="ico"><use href="#i-clock"/></svg></i><span>Clases esta semana</span><b id="statClasses">0</b><small id="statClassesNote">—</small></article>
+        </div>
+        <article class="panel fichaje" id="fichaje" aria-live="polite">
+          <div class="panel-title">
+            <div><p class="eyebrow">FACTORIAL</p><h2>Fichaje de hoy</h2></div>
+            <div class="fichaje-tools">
+              <button type="button" class="link" id="fichajeRefresh" hidden>Actualizar</button>
+              <button type="button" class="link" id="fichajeDisconnect" hidden>Desconectar</button>
+            </div>
+          </div>
+          <div id="fichajeBody"><p class="panel-empty">Consultando Factorial…</p></div>
+        </article>
+        <div class="columns">
+          <article class="panel">
+            <div class="panel-title">
+              <div><p class="eyebrow">MI JORNADA</p><h2>Horario de hoy</h2></div>
+              <button class="link" data-go="horario">Ver horario completo ↗</button>
+            </div>
+            <div id="todaySchedule"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-title">
+              <div><p class="eyebrow">A TENER EN CUENTA</p><h2>Próximamente</h2></div>
+              <small class="pill">Esta semana</small>
+            </div>
+            <div id="upcoming"></div>
+            <button class="link" data-go="calendario">Abrir calendario completo →</button>
+          </article>
+        </div>
+        <article class="panel subjects">
+          <div class="panel-title">
+            <div><p class="eyebrow">ORGANIZACIÓN</p><h2>Mis asignaturas</h2></div>
+            <small class="muted">Acceso rápido a cada espacio</small>
+          </div>
+          <div class="subject-grid" id="subjectGrid"></div>
+        </article>
+      </section>
+
+      <section id="calendario" class="view">
+        <div class="heading">
+          <div>
+            <p class="eyebrow">PLANIFICACIÓN</p>
+            <h1>Calendario</h1>
+            <p class="muted">Clases, entregas, reuniones y días no lectivos.</p>
+          </div>
+          <div class="heading-actions">
+            <button class="ghost" id="dedupeEvents" title="Eliminar eventos duplicados"><svg class="ico"><use href="#i-copies"/></svg>Limpiar duplicados</button>
+            <button class="primary" id="addEvent"><svg class="ico"><use href="#i-plus"/></svg>Nuevo evento</button>
+          </div>
+        </div>
+        <article class="panel">
+          <div class="calbar">
+            <button id="prev" aria-label="Anterior">‹</button>
+            <h2 id="monthTitle">—</h2>
+            <button id="next" aria-label="Siguiente">›</button>
+            <div class="viewswitch" id="calendarSwitch">
+              <button data-calview="month" class="chosen">Mes</button>
+              <button data-calview="week">Semana</button>
+              <button data-calview="year">Año</button>
+            </div>
+          </div>
+          <div class="legend">
+            <span id="calendarLegend" class="legend-subjects"></span>
+            <span><i class="dot evaluacion"></i> Evaluaciones</span>
+            <span><i class="holiday"></i> Festivos / vacaciones</span>
+          </div>
+          <div id="calendar" class="calendar"></div>
+          <p class="muted note"><i class="holiday"></i> Amarillo reservado exclusivamente para festivos, vacaciones y días oficiales no lectivos.</p>
+        </article>
+      </section>
+
+      <section id="tareas" class="view">
+        <div class="heading">
+          <div>
+            <p class="eyebrow">ORGANIZA Y PRIORIZA</p>
+            <h1>Tareas y entregas</h1>
+            <p class="muted">Todo lo que tienes pendiente, en un mismo lugar.</p>
+          </div>
+          <button class="primary" id="addTask"><svg class="ico"><use href="#i-plus"/></svg>Nueva tarea</button>
+        </div>
+        <div class="filters" id="taskFilters">
+          <button data-status="todas" class="chosen">Todas</button>
+          <button data-status="pendiente">Pendientes</button>
+          <button data-status="en_curso">En curso</button>
+          <button data-status="completada">Completadas</button>
+          <input type="search" id="taskSearch" class="search" placeholder="Buscar tarea…" aria-label="Buscar tarea">
+          <select id="taskPriority" class="search" aria-label="Filtrar por prioridad">
+            <option value="">Todas las prioridades</option>
+            <option value="alta">Prioridad alta</option>
+            <option value="media">Prioridad media</option>
+            <option value="baja">Prioridad baja</option>
+          </select>
+        </div>
+        <article class="panel tasklist" id="taskList"></article>
+      </section>
+
+      <section id="recordatorios" class="view">
+        <div class="heading">
+          <div>
+            <p class="eyebrow">PLAN SEMANAL</p>
+            <h1>Recordatorios</h1>
+            <p class="muted">Lo que te queda pendiente cada semana: tareas por corregir, notas que revisar…</p>
+          </div>
+          <button class="primary" id="addReminder"><svg class="ico"><use href="#i-plus"/></svg>Nuevo recordatorio</button>
+        </div>
+        <article class="panel">
+          <div class="calbar">
+            <button id="reminderPrev" aria-label="Semana anterior">‹</button>
+            <h2 id="reminderWeekTitle">—</h2>
+            <button id="reminderNext" aria-label="Semana siguiente">›</button>
+            <span><button type="button" class="ghost small" id="reminderToday">Esta semana</button></span>
+            <div class="viewswitch" id="reminderSwitch">
+              <button data-remview="week" class="chosen">Semana</button>
+              <button data-remview="all">Todas las semanas</button>
+            </div>
+          </div>
+          <div class="filters" id="reminderFilters">
+            <button data-remstatus="pending" class="chosen">Pendientes</button>
+            <button data-remstatus="done">Hechos</button>
+            <button data-remstatus="all">Todos</button>
+            <select id="reminderCategory" class="search" aria-label="Filtrar por tipo">
+              <option value="">Todos los tipos</option>
+              <option value="pendiente">Pendiente</option>
+              <option value="corregir">Por corregir</option>
+              <option value="revisar">Revisar</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+          <form class="reminder-quick" id="reminderQuick" autocomplete="off">
+            <input type="text" id="reminderQuickText" class="search" maxlength="300" placeholder="Apunta algo para esta semana y pulsa Intro…" aria-label="Nuevo recordatorio rápido">
+            <button type="submit" class="primary small">Añadir</button>
+          </form>
+          <div id="reminderList"></div>
+        </article>
+      </section>
+
+      <section id="horario" class="view">
+        <div class="heading">
+          <div>
+            <p class="eyebrow">TU SEMANA</p>
+            <h1>Mi horario</h1>
+            <p class="muted">Horario lectivo habitual · pulsa una celda para editarla.</p>
+          </div>
+          <div class="heading-actions">
+            <button class="ghost" id="manageSubjects"><svg class="ico"><use href="#i-palette"/></svg>Mis asignaturas</button>
+            <button class="ghost" id="editTimes"><svg class="ico"><use href="#i-clock"/></svg>Franjas horarias</button>
+            <button class="ghost" id="resetSchedule" hidden><svg class="ico"><use href="#i-undo"/></svg>Deshacer cambios</button>
+            <button class="primary" id="saveSchedule"><svg class="ico"><use href="#i-save"/></svg>Guardar horario</button>
+          </div>
+        </div>
+        <article class="panel scroll">
+          <div id="schedule" class="schedule"></div>
+        </article>
+        <p class="muted schedule-note" id="scheduleNote">Los cambios se guardan en tu ordenador.</p>
+      </section>
+
+      <section id="evaluaciones" class="view">
+        <div class="heading">
+          <div>
+            <p class="eyebrow">CALENDARIO OFICIAL</p>
+            <h1>Evaluaciones y plazos</h1>
+            <p class="muted">Fechas del curso según el PDF de la agenda escolar.</p>
+          </div>
+          <div class="viewswitch" id="courseSwitch">
+            <button data-course="1LFP" class="chosen">1.º LFP</button>
+            <button data-course="2LFP">2.º LFP-LOGSE</button>
+          </div>
+        </div>
+        <article class="panel">
+          <div id="evaluationsList"></div>
+          <p class="muted note" id="evaluationsNote"></p>
+        </article>
+      </section>
+
+      <section id="tutoria" class="view">
+        <div class="heading">
+          <div>
+            <p class="eyebrow">SEGUIMIENTO</p>
+            <h1>Prácticas y tutoría</h1>
+            <p class="muted">Seguimiento del alumnado, prácticas, reuniones y recordatorios.</p>
+          </div>
+          <button class="primary" id="addTutoring"><svg class="ico"><use href="#i-plus"/></svg>Nuevo seguimiento</button>
+        </div>
+        <div class="stats tutoring-stats" id="tutoringStats"></div>
+        <article class="panel" id="tutoringList"></article>
+      </section>
+
+      <section id="notas" class="view">
+        <div class="heading">
+          <div>
+            <p class="eyebrow">IDEAS Y APUNTES</p>
+            <h1>Notas</h1>
+            <p class="muted">Apuntes e ideas. Los pendientes de cada semana van en <button type="button" class="link" data-view="recordatorios">Recordatorios</button>.</p>
+          </div>
+          <button class="primary" id="addNote"><svg class="ico"><use href="#i-plus"/></svg>Nueva nota</button>
+        </div>
+        <div class="filters">
+          <input type="search" id="noteSearch" class="search search-wide" placeholder="Buscar en las notas…" aria-label="Buscar en las notas">
+        </div>
+        <div class="notes-grid" id="notesList"></div>
+      </section>
+
+      <section id="datos" class="view">
+        <div class="heading">
+          <div>
+            <p class="eyebrow">SEGURIDAD</p>
+            <h1>Copias y datos</h1>
+            <p class="muted">Todo se guarda en tu ordenador. Haz copias con frecuencia.</p>
+          </div>
+        </div>
+        <div class="columns data-columns">
+          <article class="panel">
+            <div class="panel-title"><div><p class="eyebrow">EXPORTAR</p><h2>Copia en archivo JSON</h2></div></div>
+            <p class="muted">Descarga todas tus tareas, eventos, notas y horarios en un archivo legible.</p>
+            <div class="data-actions">
+              <a class="primary as-link" href="{{ url_for('backups.export_json') }}" download><svg class="ico"><use href="#i-down"/></svg>Descargar JSON</a>
+            </div>
+            <hr class="soft">
+            <div class="panel-title"><div><p class="eyebrow">IMPORTAR</p><h2>Restaurar desde JSON</h2></div></div>
+            <p class="muted">Sustituye los datos actuales por los de un archivo exportado. Antes se guarda una copia automática.</p>
+            <div class="data-actions">
+              <input type="file" id="importFile" accept="application/json,.json" class="file-input">
+              <button class="ghost" id="importButton"><svg class="ico"><use href="#i-up"/></svg>Importar archivo…</button>
+            </div>
+          </article>
+          <article class="panel">
+            <div class="panel-title">
+              <div><p class="eyebrow">COPIAS DE SEGURIDAD</p><h2>Base de datos</h2></div>
+              <button class="primary small" id="createBackup">Crear copia</button>
+            </div>
+            <div id="dataInfo" class="data-info"></div>
+            <div id="backupList" class="backup-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="asignatura" class="view">
+        <div class="heading">
+          <div>
+            <p class="eyebrow">MI ASIGNATURA</p>
+            <h1 id="subjectTitle">Asignatura</h1>
+            <p class="muted" id="subjectMeta"></p>
+          </div>
+          <div class="heading-actions">
+            <button class="ghost" id="addSubjectNote"><svg class="ico"><use href="#i-plus"/></svg>Nota</button>
+            <button class="ghost" id="addSubjectMaterial"><svg class="ico"><use href="#i-plus"/></svg>Material</button>
+            <button class="ghost" id="addSubjectPlan"><svg class="ico"><use href="#i-plus"/></svg>Planificación</button>
+            <button class="primary" id="addSubjectTask"><svg class="ico"><use href="#i-plus"/></svg>Tarea</button>
+          </div>
+        </div>
+        <div id="subjectContent"></div>
+      </section>
+
+      <footer>Mi agenda digital　·　Tu curso, organizado con calma.</footer>
+    </main>
+  </div>
+
+  <div id="modal" class="modal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button type="button" class="modal-close" id="modalClose" aria-label="Cerrar">✕</button>
+      <p class="eyebrow" id="modalEyebrow">FORMULARIO</p>
+      <h2 id="modalTitle">—</h2>
+      <form id="modalForm" novalidate>
+        <div id="modalFields" class="form-grid"></div>
+        <p class="form-error" id="modalError" hidden></p>
+        <div class="modal-actions">
+          <button type="button" class="ghost" id="modalCancel">Cancelar</button>
+          <button type="submit" class="primary" id="modalSubmit">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="confirm" class="modal" hidden>
+    <div class="modal-card small-card" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <p class="eyebrow">CONFIRMACIÓN</p>
+      <h2 id="confirmTitle">¿Continuar?</h2>
+      <p class="muted" id="confirmMessage"></p>
+      <div class="modal-actions">
+        <button type="button" class="ghost" id="confirmCancel">Cancelar</button>
+        <button type="button" class="primary" id="confirmAccept">Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <aside id="updateCard" class="update-card" hidden role="status">
+    <strong>Hay una versión nueva de la agenda</strong>
+    <p id="updateText"></p>
+    <pre id="updateNotes" class="update-notes" hidden></pre>
+    <p class="update-hint">Tus datos no se tocan. La agenda se reiniciará sola.</p>
+    <div class="update-actions">
+      <button type="button" class="ghost" id="updateLater">Más tarde</button>
+      <button type="button" class="primary" id="updateInstall">Actualizar ahora</button>
+    </div>
+  </aside>
+
+  <div id="updateOverlay" class="update-overlay" hidden>
+    <div class="update-overlay-card">
+      <b class="logo">M</b>
+      <strong>Actualizando la agenda…</strong>
+      <p id="updateOverlayText">Se reiniciará en unos segundos. No cierres esta ventana.</p>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
+</body>
+</html>

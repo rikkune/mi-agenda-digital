@@ -1,0 +1,524 @@
+/* =====================================================================
+   Capa de mejoras de interfaz (se carga después de styles.css y extra.css)
+   - Fondos ilustrados seleccionables (static/img/fondos)
+   - Sistema de botones coherente: tamaños, estados, foco visible
+   - Mejor legibilidad (tamaños de letra y contraste)
+   ===================================================================== */
+
+:root{
+  --muted:#666983;               /* más contraste que el gris original */
+  --accent:#7a4fc0;              /* morado legible sobre blanco */
+  --accent-strong:#5f3a9e;
+  --accent-soft:rgba(122,79,192,.10);
+  --rose:#cf4c74;
+  --danger:#c2334f;
+  --btn-h:42px;
+  --btn-h-sm:36px;
+  --ring:0 0 0 3px rgba(134,86,196,.35);
+}
+
+/* ---------- Fondos ilustrados ---------- */
+html[data-fondo="crema"]{
+  --pattern:url("../img/fondos/crema.webp");
+  --page:#fdf3e9;
+  --wash:linear-gradient(180deg,rgba(255,250,244,.78),rgba(255,250,244,.86));
+}
+html[data-fondo="rosa"]{
+  --pattern:url("../img/fondos/rosa.webp");
+  --page:#fbd3e0;
+  --wash:linear-gradient(180deg,rgba(255,244,248,.78),rgba(255,244,248,.86));
+}
+html[data-fondo="turquesa"]{
+  --pattern:url("../img/fondos/turquesa.webp");
+  --page:#2f8f9a;
+  --wash:linear-gradient(180deg,rgba(238,249,249,.80),rgba(238,249,249,.88));
+}
+
+html:not([data-fondo="liso"]) body{background:var(--page)}
+html:not([data-fondo="liso"]) body::before,
+html:not([data-fondo="liso"]) body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+}
+html:not([data-fondo="liso"]) body::before{z-index:-2;background:var(--pattern) 0 0/370px repeat}
+html:not([data-fondo="liso"]) body::after{z-index:-1;background:var(--wash)}
+
+/* Cabecera de cada sección: banda con el patrón a todo color y tarjeta legible encima
+   (como las portadas de Notion o las agendas en papel). */
+html:not([data-fondo="liso"]) .welcome,
+html:not([data-fondo="liso"]) .heading{
+  padding:22px;
+  border-radius:24px;
+  background:var(--pattern) center/300px repeat;
+  border:3px solid #fff;
+  box-shadow:0 12px 32px rgba(45,48,71,.12);
+  align-items:center;
+}
+html:not([data-fondo="liso"]) .welcome > div:first-child,
+html:not([data-fondo="liso"]) .heading > div:first-child{
+  background:rgba(255,255,255,.94);
+  padding:16px 22px;
+  border-radius:18px;
+  box-shadow:0 6px 20px rgba(45,48,71,.10);
+  backdrop-filter:blur(6px);
+}
+html:not([data-fondo="liso"]) .welcome .date{background:rgba(255,255,255,.94);border-color:#fff}
+html:not([data-fondo="liso"]) .heading .viewswitch{background:rgba(255,255,255,.94);border-color:#fff}
+
+/* ---------- Iconos ---------- */
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+.ico{
+  width:18px;height:18px;flex:none;
+  fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;
+  vertical-align:-.2em;
+}
+
+/* ---------- Foco visible para teclado ---------- */
+:where(button,a,input,select,textarea,[tabindex],.custom-select-trigger):focus-visible{
+  outline:3px solid rgba(134,86,196,.6);
+  outline-offset:2px;
+}
+
+/* ---------- Botones ---------- */
+.primary,.ghost{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:var(--btn-h);
+  padding:0 18px;
+  border-radius:12px;
+  font-size:13px;
+  line-height:1;
+  white-space:nowrap;
+  text-decoration:none;
+  transition:transform .12s ease,box-shadow .15s ease,background-color .15s ease,border-color .15s ease,color .15s ease,filter .15s ease;
+}
+.primary{
+  background:linear-gradient(135deg,#8656c4 0%,var(--rose) 100%);
+  box-shadow:0 4px 14px rgba(134,86,196,.30);
+}
+.primary:hover{transform:translateY(-1px);filter:brightness(1.06);box-shadow:0 8px 20px rgba(134,86,196,.34)}
+.primary:active,.ghost:active{transform:translateY(0) scale(.98)}
+.primary.as-link{display:inline-flex}
+.primary.small,.ghost.small{min-height:var(--btn-h-sm);padding:0 14px;font-size:12.5px}
+.primary .ico{stroke-width:2.3}
+
+.ghost{
+  background:#fff;
+  color:var(--accent);
+  border:2px solid #e3dcf3;
+}
+.ghost:hover{background:#faf6ff;border-color:#c9b5ea;color:var(--accent-strong);transform:translateY(-1px)}
+.ghost:disabled,.primary:disabled{opacity:.5;cursor:not-allowed;transform:none;filter:none}
+
+.link{
+  font-size:12.5px;
+  color:var(--accent);
+  padding:6px 8px;
+  margin:-6px -8px;
+  border-radius:8px;
+  text-decoration-thickness:1.5px;
+  text-underline-offset:3px;
+}
+.link:hover{color:var(--accent-strong);background:var(--accent-soft)}
+
+/* Botones de icono (editar / eliminar): área táctil más grande y peligro en rojo */
+.icon-btn{
+  display:inline-grid;
+  place-items:center;
+  width:34px;
+  height:34px;
+  padding:0;
+  font-size:15px;
+  color:#6b6e85;
+  border-radius:10px;
+}
+.icon-btn:hover{background:var(--accent-soft);color:var(--accent);transform:none}
+.icon-btn[title^="Eliminar"]:hover{background:rgba(214,72,88,.12);color:var(--danger)}
+
+/* Casilla de completar tarea más fácil de pulsar */
+.task>i{width:26px;height:26px;font-size:13px}
+
+/* Chips de filtro y buscador */
+.filters button{min-height:38px;padding:0 16px;font-size:12.5px}
+.filters .chosen{color:var(--accent);border-color:#b79ae3}
+.search{min-height:38px;font-size:13px}
+
+.viewswitch button{font-size:12px;min-height:34px}
+.viewswitch button.chosen{color:var(--accent)}
+
+/* ---------- Barra lateral ---------- */
+.nav{
+  font-size:13.5px;
+  padding:10px 12px;
+  gap:12px;
+  color:#5f6278 !important;
+}
+.nav .ico{width:19px;height:19px;opacity:.85}
+.nav:hover{
+  transform:none;
+  background:rgba(122,79,192,.07);
+  box-shadow:none;
+  font-weight:600;
+  color:#3d3f57 !important;
+}
+.nav.active{
+  background:linear-gradient(90deg,rgba(207,76,116,.12),rgba(134,86,196,.12));
+  color:var(--accent) !important;
+  font-weight:700;
+  box-shadow:inset 3px 0 0 var(--rose);
+}
+.nav.active::before{display:none}
+.nav.active .ico{opacity:1}
+.label,.eyebrow{color:#b8507f;font-size:10.5px}
+.profile strong,.profile small{font-size:12px}
+
+/* ---------- Cabecera fija con acciones rápidas ---------- */
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  height:64px;
+  margin-bottom:28px;
+}
+.crumbs{font-size:13.5px}
+.crumbs span{margin:0 6px;color:#b9b4cc}
+.toolbar{display:flex;align-items:center;gap:10px}
+.year{padding:9px 16px}
+
+.pop-wrap{position:relative}
+.popover{
+  position:absolute;
+  right:0;
+  top:calc(100% + 8px);
+  z-index:70;
+  min-width:260px;
+  padding:8px;
+  background:#fff;
+  border:1px solid #e3dcf3;
+  border-radius:16px;
+  box-shadow:0 18px 48px rgba(45,48,71,.18);
+  animation:fadeIn .15s ease;
+  color:var(--ink);
+}
+.popover.menu button{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  border:0;
+  background:none;
+  padding:10px 12px;
+  border-radius:10px;
+  font:inherit;
+  font-size:13.5px;
+  font-weight:600;
+  color:var(--ink);
+  cursor:pointer;
+  text-align:left;
+}
+.popover.menu button:hover,.popover.menu button:focus-visible{background:#f6f1fd;outline:none}
+kbd{
+  margin-left:auto;
+  font-family:inherit;
+  font-size:11px;
+  font-weight:700;
+  color:#5f6278;
+  background:#f3f0f8;
+  border:1px solid #e3dcf3;
+  border-bottom-width:2px;
+  border-radius:6px;
+  padding:1px 7px;
+}
+.menu-hint{margin:6px 4px 2px;padding:8px 8px 2px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+.menu-hint kbd{margin:0 2px}
+
+.popover.fondos{width:300px;padding:14px}
+.popover.fondos .eyebrow{margin:0 0 10px}
+.fondo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.fondo-opt{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  border:2px solid var(--line);
+  background:#fff;
+  border-radius:14px;
+  padding:6px 6px 8px;
+  font:inherit;
+  font-size:12.5px;
+  font-weight:700;
+  color:var(--ink);
+  cursor:pointer;
+  transition:border-color .15s,box-shadow .15s,transform .12s;
+}
+.fondo-opt:hover{border-color:#c9b5ea;transform:translateY(-1px)}
+.fondo-opt[aria-checked="true"]{border-color:#8656c4;box-shadow:var(--ring)}
+.fondo-opt .thumb{display:block;height:64px;border-radius:10px;background-size:96px;background-repeat:repeat}
+.t-crema{background-image:url("../img/fondos/crema-mini.webp")}
+.t-rosa{background-image:url("../img/fondos/rosa-mini.webp")}
+.t-turquesa{background-image:url("../img/fondos/turquesa-mini.webp")}
+.t-liso{background:linear-gradient(135deg,#fff3f6,#f1e7fb 60%,#e9f6ef)}
+
+/* ---------- Tarjetas ---------- */
+/* Los paneles no se mueven al pasar el ratón (no son clicables): menos ruido visual */
+.panel:hover,.stats article:hover{transform:none;box-shadow:var(--shadow-card)}
+/* Las estadísticas de inicio sí son clicables y lo dicen */
+.stats article[data-go]{cursor:pointer;transition:transform .15s ease,box-shadow .15s ease,border-color .15s}
+.stats article[data-go]:hover{transform:translateY(-3px);border-color:#d6c6f0;box-shadow:0 16px 36px rgba(134,86,196,.18)}
+.stats i .ico{width:24px;height:24px;stroke:#fff;stroke-width:2.1}
+
+/* ---------- Legibilidad ---------- */
+.muted{font-size:13.5px}
+.stats span{font-size:12.5px}
+.stats small{font-size:11.5px}
+.upcoming strong{font-size:13.5px}
+.upcoming span small{font-size:11.5px}
+.tile strong{font-size:13px}
+.tile small{font-size:11.5px}
+.task strong{font-size:14px}
+.task small,.task time{font-size:12px}
+.task label,.task-target{font-size:11px}
+.task-meta{font-size:11px}
+.mini-item strong{font-size:13px}
+.mini-item small,.mini-item time{font-size:11px}
+.eval-body strong{font-size:13px}
+.eval-body small{font-size:11px}
+.kind-badge,.status-badge{font-size:10.5px}
+.tutoring-row strong{font-size:13.5px}
+.tutoring-row small{font-size:12px}
+.note-card h3{font-size:15px}
+.note-card .note-body{font-size:13px}
+.note-card .note-foot,.note-tag{font-size:11px}
+.legend{font-size:11.5px}
+.calhead,.weekday-head{font-size:11px}
+.event{font-size:11px}
+.event .event-time{font-size:10px}
+.more{font-size:10.5px}
+.slot,.lesson{font-size:11px}
+.lesson b{font-size:12px}
+.panel-empty{font-size:13px}
+.backup-row strong{font-size:12.5px}
+.backup-row small,.data-info{font-size:12px}
+.field label{font-size:11px}
+.field input,.field select,.field textarea{font-size:14px}
+.custom-select-trigger,.custom-select-option{font-size:13px}
+.custom-select-option .option-sub{font-size:11px}
+.date small{font-size:10px}
+footer{font-size:11.5px}
+.toast{font-size:13.5px}
+
+/* ---------- Modales: botones siempre visibles en formularios largos ---------- */
+.modal-actions{
+  position:sticky;
+  bottom:-32px;
+  z-index:2;
+  margin:22px -32px -32px;
+  padding:16px 32px 22px;
+  background:rgba(255,255,255,.97);
+  border-radius:0 0 26px 26px;
+}
+
+/* ---------- Móvil ---------- */
+.backdrop{position:fixed;inset:0;z-index:3;background:rgba(45,48,71,.4);backdrop-filter:blur(2px)}
+@media(min-width:781px){.backdrop{display:none !important}}
+
+@media(max-width:780px){
+  header{height:60px;margin-bottom:20px}
+  .mobile{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;padding:0;border-radius:12px}
+  .mobile .ico{width:24px;height:24px}
+  .crumbs{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 8px}
+  .hide-sm{display:none}
+  .toolbar .primary,.toolbar .ghost{width:42px;padding:0}
+  html:not([data-fondo="liso"]) .welcome,
+  html:not([data-fondo="liso"]) .heading{padding:14px;border-radius:20px}
+  html:not([data-fondo="liso"]) .welcome > div:first-child,
+  html:not([data-fondo="liso"]) .heading > div:first-child{width:100%}
+  .heading-actions .primary,.heading-actions .ghost{flex:1 1 auto}
+  .popover{position:fixed;left:12px;right:12px;top:68px;width:auto;min-width:0}
+  .popover.fondos{width:auto}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
+}
+
+/* =====================================================================
+   Tema por asignatura: al abrir una asignatura, la interfaz toma su color.
+   Las variables --subj, --subj-rgb, --subj-strong y --subj-light las
+   calcula app.js (applySubjectTheme) a partir del color de la asignatura.
+   ===================================================================== */
+html[data-subject-theme]{
+  --accent:var(--subj-strong);
+  --accent-strong:var(--subj-strong);
+  --accent-soft:rgba(var(--subj-rgb),.12);
+  --ring:0 0 0 3px rgba(var(--subj-rgb),.35);
+}
+
+/* Fondo de la página teñido suavemente */
+html[data-subject-theme]:not([data-fondo="liso"]) body::after{
+  background:
+    linear-gradient(180deg,rgba(var(--subj-rgb),.10),rgba(var(--subj-rgb),.18)),
+    var(--wash);
+  transition:background .3s ease;
+}
+html[data-subject-theme][data-fondo="liso"] body{
+  background:linear-gradient(180deg,rgba(var(--subj-rgb),.12),rgba(var(--subj-rgb),.04)) fixed,var(--bg);
+}
+
+/* Barra lateral y cabecera */
+html[data-subject-theme] .nav.active{
+  background:linear-gradient(90deg,rgba(var(--subj-rgb),.20),rgba(var(--subj-rgb),.08));
+  color:var(--subj-strong) !important;
+  box-shadow:inset 3px 0 0 var(--subj);
+}
+html[data-subject-theme] .label,
+html[data-subject-theme] .brand small{color:var(--subj-strong)}
+html[data-subject-theme] .logo{background:linear-gradient(135deg,var(--subj-light),var(--subj-strong))}
+html[data-subject-theme] .year{
+  background:linear-gradient(135deg,var(--subj-light),var(--subj),var(--subj-strong));
+  box-shadow:0 4px 14px rgba(var(--subj-rgb),.35);
+}
+html[data-subject-theme] header{box-shadow:0 6px 24px rgba(var(--subj-rgb),.16)}
+html[data-subject-theme] .crumbs strong{color:var(--subj-strong)}
+
+/* Botones */
+html[data-subject-theme] .primary:not(.danger){
+  background:linear-gradient(135deg,var(--subj) 0%,var(--subj-strong) 100%);
+  box-shadow:0 4px 14px rgba(var(--subj-rgb),.35);
+}
+html[data-subject-theme] .primary:not(.danger):hover{box-shadow:0 8px 20px rgba(var(--subj-rgb),.42)}
+html[data-subject-theme] .ghost{color:var(--subj-strong);border-color:rgba(var(--subj-rgb),.35)}
+html[data-subject-theme] .ghost:hover{background:rgba(var(--subj-rgb),.08);border-color:var(--subj);color:var(--subj-strong)}
+html[data-subject-theme] .link{color:var(--subj-strong)}
+html[data-subject-theme] :where(button,a,input,select,textarea,[tabindex],.custom-select-trigger):focus-visible{
+  outline-color:rgba(var(--subj-rgb),.7);
+}
+
+/* Cabecera de la asignatura */
+html[data-subject-theme] #asignatura .heading{
+  border-color:var(--subj-light);
+  box-shadow:0 12px 32px rgba(var(--subj-rgb),.28);
+}
+html[data-subject-theme] #asignatura .heading > div:first-child{box-shadow:inset 6px 0 0 var(--subj),0 6px 20px rgba(var(--subj-rgb),.18)}
+html[data-subject-theme] #asignatura h1{
+  background:linear-gradient(135deg,var(--subj),var(--subj-strong));
+  -webkit-background-clip:text;
+  background-clip:text;
+}
+html[data-subject-theme] #asignatura .eyebrow{color:var(--subj-strong)}
+
+/* Tarjetas y paneles */
+html[data-subject-theme] #asignatura .stats article,
+html[data-subject-theme] #asignatura .panel{
+  border-color:rgba(var(--subj-rgb),.30);
+  box-shadow:0 12px 32px rgba(var(--subj-rgb),.14);
+}
+html[data-subject-theme] #asignatura .panel{border-top:4px solid var(--subj)}
+html[data-subject-theme] #asignatura .stats article:nth-child(1) i{background:linear-gradient(135deg,var(--subj),var(--subj-light))}
+html[data-subject-theme] #asignatura .stats article:nth-child(2) i{background:linear-gradient(135deg,var(--subj-strong),var(--subj))}
+html[data-subject-theme] #asignatura .stats article:nth-child(3) i{background:linear-gradient(135deg,var(--subj-light),var(--subj-strong))}
+html[data-subject-theme] #asignatura .mini-item .dot.practicas{background:var(--subj)}
+html[data-subject-theme] #asignatura .mini-item{border-color:rgba(var(--subj-rgb),.18)}
+
+/* ---------- Recordatorios (plan semanal) ---------- */
+.nav-count{margin-left:auto;min-width:22px;height:20px;padding:0 7px;border-radius:10px;background:linear-gradient(135deg,var(--coral),var(--purple));color:#fff;font-size:11px;font-weight:800;display:inline-grid;place-items:center;line-height:1}
+.ghost.small{padding:8px 14px;font-size:11px}
+#recordatorios .calbar h2{min-width:230px;text-align:center}
+.reminder-quick{display:flex;gap:10px;margin:0 0 18px}
+.reminder-quick input{flex:1;min-width:0}
+.reminder-week{margin-top:6px}
+.reminder-week + .reminder-week{margin-top:26px}
+.reminder-week-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding-bottom:8px;margin-bottom:6px;border-bottom:2px dashed var(--line)}
+.reminder-week-head h3{margin:0;font-size:15px;font-weight:800;color:var(--ink)}
+.reminder-week-head h3 .pill{margin-left:8px;vertical-align:middle}
+.reminder-week-head small{color:var(--muted);font-size:12px;font-weight:600}
+.reminder-week.current .reminder-week-head{border-bottom-color:var(--purple)}
+.reminder-week.carry .reminder-week-head h3{color:#d75a7a}
+.reminder-cat{border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;white-space:nowrap}
+.reminder-cat.cat-pendiente{background:rgba(167,122,216,.14);color:#8a5cc4}
+.reminder-cat.cat-corregir{background:rgba(255,127,127,.16);color:#d75a5a}
+.reminder-cat.cat-revisar{background:rgba(66,149,232,.14);color:#2f78c4}
+.reminder-cat.cat-otro{background:rgba(140,146,155,.16);color:#6b7079}
+.reminder-body{display:block;white-space:pre-wrap;word-break:break-word;color:var(--muted);font-size:12px;margin-top:3px}
+.reminder-empty{color:var(--muted);font-size:13px;padding:14px 0;margin:0}
+.note-card .icon-btn.to-reminder{width:auto;padding:0 8px;font-size:11px;font-weight:700}
+@media (max-width:640px){
+  #recordatorios .calbar h2{min-width:0;flex:1;font-size:15px}
+  .reminder-quick{flex-direction:column}
+}
+
+/* Botón de sincronización con el Aula Virtual */
+#syncBtn.syncing .ico{animation:sync-spin 1s linear infinite}
+@keyframes sync-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){#syncBtn.syncing .ico{animation:none;opacity:.5}}
+
+/* Progreso de corrección en los recordatorios del Aula Virtual */
+.grading-progress{margin:6px 0 4px;max-width:520px}
+.gp-top{display:flex;align-items:center;gap:10px}
+.gp-bar{flex:1;display:flex;height:10px;border-radius:999px;overflow:hidden;background:#ece7f3}
+.gp-bar span{display:block;height:100%}
+.gp-graded{background:#4CAF6A}
+.gp-pending{background:#F29A43}
+.gp-missing{background:repeating-linear-gradient(135deg,#c9c3d3 0 4px,#ddd8e5 4px 8px)}
+.gp-percent{font-size:13px;min-width:44px;text-align:right;color:#2f7d4a}
+.gp-text{display:block;margin-top:3px;font-size:12px;line-height:1.35;color:var(--muted, #6b6578)}
+.gp-text b{color:var(--ink, #2b2533)}
+
+/* ---------- Fichaje en Factorial ---------- */
+.fichaje{margin-bottom:22px}
+.fichaje-tools{display:flex;gap:14px}
+.fichaje-connect p{margin:0 0 14px;max-width:62ch}
+.fichaje-status{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-bottom:16px}
+.fichaje-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;font-weight:700;font-size:13px;background:var(--accent-soft);color:var(--accent-strong)}
+.fichaje-pill::before{content:"";width:9px;height:9px;border-radius:50%;background:currentColor}
+.fichaje-pill.working{background:rgba(61,153,112,.14);color:#23744f}
+.fichaje-pill.break{background:rgba(217,164,65,.18);color:#8a5d0c}
+.fichaje-pill.out{background:rgba(102,105,131,.12);color:var(--muted)}
+.fichaje-worked{font-size:14px;color:var(--ink)}
+.fichaje-actions{display:flex;flex-wrap:wrap;gap:10px}
+.fichaje-error{color:var(--danger);font-size:13px;margin:12px 0}
+.fichaje-wait{display:flex;gap:14px;align-items:flex-start}
+.fichaje-wait p{margin:0;max-width:62ch;line-height:1.5}
+.fichaje-spinner{flex:none;width:22px;height:22px;border-radius:50%;border:3px solid var(--accent-soft);border-top-color:var(--accent);animation:sync-spin 1s linear infinite}
+@media (prefers-reduced-motion:reduce){.fichaje-spinner{animation:none}}
+
+
+/* ---------- Asignaturas con color elegido por cada persona ---------- */
+.tile.custom-subject{border-color:color-mix(in srgb,var(--sc) 30%,transparent);color:color-mix(in srgb,var(--sc) 80%,#000)}
+.tile.custom-subject::after{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--sc),var(--coral));border-radius:var(--radius-md) var(--radius-md) 0 0}
+.lesson.custom-subject{background:linear-gradient(135deg,color-mix(in srgb,var(--sc) 18%,transparent),rgba(255,127,127,.08));color:color-mix(in srgb,var(--sc) 80%,#000);border:1px solid color-mix(in srgb,var(--sc) 30%,transparent)}
+.nav.nav-add{color:var(--muted);font-size:12px}
+.nav.nav-add .ico{width:16px;height:16px}
+
+.setup-card{grid-column:1/-1;border:2px dashed var(--line);border-radius:var(--radius-md);padding:18px 20px;background:var(--card-strong)}
+.setup-card strong{display:block;font-size:16px;color:var(--ink);margin-bottom:6px}
+.setup-card p{margin:0 0 14px;color:var(--muted);font-size:13px;line-height:1.5}
+.setup-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+.subjects-manager{display:flex;flex-direction:column;gap:14px}
+.subject-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:50vh;overflow:auto}
+.subject-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--card-strong)}
+.subject-row span{flex:1;min-width:0}
+.subject-row strong{display:block;font-size:13px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.subject-row small{font-size:11px;color:var(--muted)}
+.subjects-manager>.primary{align-self:flex-start}
+
+/* ---------- Actualizaciones ---------- */
+.update-card{position:fixed;right:24px;bottom:24px;z-index:85;width:min(380px,calc(100vw - 32px));background:var(--card-strong);border:2px solid var(--line);border-radius:var(--radius-lg);box-shadow:var(--shadow-card);padding:18px 20px;animation:slideIn .3s ease}
+.update-card strong{display:block;font-size:15px;color:var(--ink)}
+.update-card p{margin:6px 0 0;font-size:13px;color:var(--muted);line-height:1.45}
+.update-card .update-hint{font-size:12px}
+.update-notes{margin:10px 0 0;max-height:140px;overflow:auto;white-space:pre-wrap;font:12px/1.45 inherit;font-family:inherit;color:var(--ink);background:rgba(167,122,216,.07);border-radius:var(--radius-sm);padding:8px 10px}
+.update-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:14px}
+.update-overlay{position:fixed;inset:0;z-index:120;display:grid;place-items:center;background:rgba(253,251,255,.85);backdrop-filter:blur(6px)}
+.update-overlay-card{text-align:center;max-width:320px;padding:0 16px}
+.update-overlay-card .logo{display:inline-block;padding:10px 15px;font-size:20px;margin-bottom:12px;animation:pulse 1.4s ease-in-out infinite}
+.update-overlay-card strong{display:block;font-size:18px;color:var(--ink)}
+.update-overlay-card p{color:var(--muted);font-size:13px}
+@keyframes pulse{50%{opacity:.55;transform:scale(.94)}}
+@media (max-width:600px){.update-card{right:16px;bottom:16px}}
+
+.legend-subjects{display:contents}

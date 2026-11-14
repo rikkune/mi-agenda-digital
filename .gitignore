@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Credenciales (nunca se suben)
+Recursos/medac_pass.txt
+*pass*.txt
+
+# Datos personales de la agenda: base de datos, copias, sesión, cookies de
+# Factorial, registros... Nunca se suben (cada persona tiene los suyos).
+AgendaDigitalApp/data/
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+*.log
+
+# Ejecutable (PyInstaller) y fichero generado al compilar
+AgendaDigitalApp/build/
+AgendaDigitalApp/dist/
+AgendaDigitalApp/app/_build_info.py
+
+# Documentos y recursos de trabajo (PDF del centro, imágenes originales,
+# capturas de pantalla, prompts): no forman parte de la aplicación
+*.pdf
+/*.jpg
+.openchamber/
+MiAgendaDigital_frontend_y_prompt/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Environment
+.env
+.env.local
