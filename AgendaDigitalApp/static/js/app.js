@@ -645,7 +645,7 @@ async function navigate(view) {
   if (view !== 'asignatura') clearSubjectTheme();
   state.currentView = view;
   $$('.view').forEach((section) => section.classList.toggle('active', section.id === view));
-  $('#crumb').textContent = VIEW_TITLES[view] || 'Mi agenda';
+  document.title = `${VIEW_TITLES[view] || 'Inicio'} · Mi agenda`;
   setActiveNav(view);
   $('#sidebar').classList.remove('open');
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1928,7 +1928,7 @@ async function loadSubject(slug) {
   // Si mientras cargaba se ha cambiado de sección, no se pinta el tema
   if (state.currentView === 'asignatura' && state.subject === subject.slug) {
     applySubjectTheme(subject.color);
-    $('#crumb').textContent = subject.short_name || subject.name;
+    document.title = `${subject.short_name || subject.name} · Mi agenda`;
   }
   $('#subjectTitle').textContent = subject.name;
   $('#subjectMeta').textContent = `${subject.course || 'Sin curso'} · ${data.stats.open} tarea${data.stats.open === 1 ? '' : 's'} abierta${data.stats.open === 1 ? '' : 's'} · ${data.stats.exams} examen${data.stats.exams === 1 ? '' : 'es'}`;
@@ -3315,6 +3315,75 @@ async function deleteSubject(subject) {
   }
 }
 
+/* ---------- Cuenta atrás hasta el próximo descanso ---------- */
+
+function breakIcon(name, scope) {
+  const lower = (name || '').toLowerCase();
+  if (lower.includes('navidad')) return '🎄';
+  if (lower.includes('semana santa')) return '🌷';
+  if (lower.includes('verano')) return '☀️';
+  if (scope === 'no_lectivo') return '🌿';
+  return '🎉';
+}
+
+// «Vacaciones de Navidad» → «las vacaciones de Navidad»; «Día no lectivo…» → «el día no lectivo…»
+function breakPhrase(name) {
+  const clean = (name || '').replace(/\s*\([^)]*\)\s*$/, '').trim();
+  const rules = [
+    [/^Vacaciones\b/, 'las '], [/^Días\b/, 'los '], [/^Día\b/, 'el '], [/^Fiesta\b/, 'la ']
+  ];
+  for (const [pattern, article] of rules) {
+    if (pattern.test(clean)) {
+      const lowered = /^Fiesta\b/.test(clean) ? clean : clean.charAt(0).toLowerCase() + clean.slice(1);
+      return article + lowered;
+    }
+  }
+  return clean;
+}
+
+function formatDayMonth(iso) {
+  const date = parseISO(iso);
+  if (!date) return '';
+  return new Intl.DateTimeFormat('es-ES', { weekday: 'long', day: 'numeric', month: 'long' }).format(date);
+}
+
+async function loadCountdown() {
+  let data;
+  try {
+    data = await api('/api/countdown');
+  } catch (error) {
+    return;
+  }
+  const box = $('#countdown');
+  const text = $('#countdownText');
+  const phrase = breakPhrase(data.name);
+  const isPeriod = data.scope === 'vacaciones' || /^(Días|Vacaciones)\b/.test(data.name || '');
+  $('#countdownIcon').textContent = data.state === 'done' ? '☀️' : breakIcon(data.name, data.scope);
+  // Texto completo (pantallas anchas) y versión corta (móvil).
+  let full;
+  let short;
+  if (data.state === 'now') {
+    const back = `<small>Vuelves el ${esc(formatDayMonth(data.back))}</small>`;
+    full = isPeriod ? `¡Disfruta de ${esc(phrase)}! ${back}` : `¡Hoy es fiesta: ${esc(phrase)}! ${back}`;
+    short = isPeriod ? '¡A disfrutar!' : '¡Hoy es fiesta!';
+  } else if (data.state === 'upcoming' && data.days === 1) {
+    full = isPeriod ? `¡Mañana empiezan ${esc(phrase)}!` : `¡Mañana es fiesta: ${esc(phrase)}!`;
+    short = '¡Mañana descanso!';
+  } else if (data.state === 'upcoming') {
+    const school = data.school_days === 1 ? '1 día de clase' : `${data.school_days} días de clase`;
+    full = `Faltan <b>${data.days} días</b> para ${esc(phrase)} <small>· ${school}</small>`;
+    short = `<b>${data.days} días</b>`;
+  } else {
+    full = '¡Curso completado! <small>Feliz verano</small>';
+    short = '¡Feliz verano!';
+  }
+  text.innerHTML = `<span class="hide-sm">${full}</span><span class="only-sm">${short}</span>`;
+  const plain = text.querySelector('.hide-sm').textContent.replace(/\s+/g, ' ').trim();
+  box.title = `${plain} · Ver el calendario`;
+  box.setAttribute('aria-label', `${plain}. Ver el calendario`);
+  box.hidden = false;
+}
+
 /* ---------- Actualizaciones ---------- */
 
 const UPDATE_SKIP_KEY = 'agenda-update-omitida';
@@ -3396,6 +3465,7 @@ async function init() {
   $('#logoutBtn').addEventListener('click', logout);
   syncCanvas({ silent: true });
   checkForUpdate();
+  loadCountdown();
 }
 
 document.addEventListener('DOMContentLoaded', init);

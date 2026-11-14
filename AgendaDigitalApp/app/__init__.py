@@ -58,6 +58,7 @@ def create_app() -> Flask:
         backups,
         calendar,
         canvas,
+        countdown,
         dashboard,
         evaluations,
         factorial,
@@ -87,6 +88,7 @@ def create_app() -> Flask:
         canvas.bp,
         factorial.bp,
         updates.bp,
+        countdown.bp,
     ):
         app.register_blueprint(blueprint)
 

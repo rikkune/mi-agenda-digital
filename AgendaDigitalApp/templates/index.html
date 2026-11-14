@@ -70,7 +70,10 @@
     <main>
       <header>
         <button id="menu" class="mobile" aria-label="Abrir menú" aria-controls="sidebar" aria-expanded="false"><svg class="ico"><use href="#i-menu"/></svg></button>
-        <span class="crumbs">Mi espacio <span aria-hidden="true">/</span> <strong id="crumb">Inicio</strong></span>
+        <button type="button" class="countdown" id="countdown" data-view="calendario" title="Ver el calendario" hidden>
+          <span class="countdown-badge" id="countdownIcon" aria-hidden="true">✿</span>
+          <span class="countdown-text" id="countdownText"></span>
+        </button>
         <div class="toolbar">
           <div class="pop-wrap">
             <button type="button" class="primary small" id="quickAddBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="quickAddMenu" title="Crear algo nuevo">

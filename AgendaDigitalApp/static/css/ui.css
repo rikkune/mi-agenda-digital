@@ -184,8 +184,26 @@ header{
   height:64px;
   margin-bottom:28px;
 }
-.crumbs{font-size:13.5px}
-.crumbs span{margin:0 6px;color:#b9b4cc}
+/* Cuenta atrás hasta el próximo descanso (sustituye a la antigua ruta «Mi espacio / …») */
+.countdown{
+  display:inline-flex;align-items:center;gap:10px;min-width:0;
+  padding:5px 16px 5px 5px;border:2px solid var(--line);border-radius:999px;
+  background:linear-gradient(135deg,rgba(255,184,140,.14),rgba(233,137,180,.12) 55%,rgba(167,122,216,.12));
+  color:var(--ink);font:inherit;font-size:13.5px;cursor:pointer;
+  transition:transform .15s,box-shadow .15s,border-color .15s;
+}
+.countdown:hover{transform:translateY(-1px);border-color:var(--pink);box-shadow:var(--shadow-soft)}
+.countdown:focus-visible{outline:none;box-shadow:var(--ring)}
+.countdown-badge{
+  flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;
+  background:#fff;box-shadow:0 2px 8px rgba(233,137,180,.25);font-size:17px;line-height:1;
+}
+.countdown:hover .countdown-badge{animation:wiggle .5s ease}
+.countdown-text{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.countdown-text b{font-family:"Cup Cakes","Nunito",sans-serif;font-weight:800;color:#c25a8a;font-size:15px}
+.countdown-text small{color:var(--muted);font-size:12px;margin-left:2px}
+.countdown .only-sm{display:none}
+@keyframes wiggle{25%{transform:rotate(-12deg)}75%{transform:rotate(12deg)}}
 .toolbar{display:flex;align-items:center;gap:10px}
 .year{padding:9px 16px}
 
@@ -329,7 +347,9 @@ footer{font-size:11.5px}
   header{height:60px;margin-bottom:20px}
   .mobile{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;padding:0;border-radius:12px}
   .mobile .ico{width:24px;height:24px}
-  .crumbs{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 8px}
+  .countdown{flex:0 1 auto;margin:0 auto 0 8px;padding-right:14px;font-size:13px}
+  .countdown .only-sm{display:inline}
+  .countdown-badge{width:28px;height:28px;font-size:15px}
   .hide-sm{display:none}
   .toolbar .primary,.toolbar .ghost{width:42px;padding:0}
   html:not([data-fondo="liso"]) .welcome,
@@ -382,7 +402,7 @@ html[data-subject-theme] .year{
   box-shadow:0 4px 14px rgba(var(--subj-rgb),.35);
 }
 html[data-subject-theme] header{box-shadow:0 6px 24px rgba(var(--subj-rgb),.16)}
-html[data-subject-theme] .crumbs strong{color:var(--subj-strong)}
+html[data-subject-theme] .countdown-text b{color:var(--subj-strong)}
 
 /* Botones */
 html[data-subject-theme] .primary:not(.danger){

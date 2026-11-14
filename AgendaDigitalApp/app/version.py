@@ -4,4 +4,4 @@ Para publicar una versión nueva: sube este número, haz commit y crea la
 etiqueta vX.Y.Z (ver README.md).
 """
 
-APP_VERSION = "1.1.0"
+APP_VERSION = "1.2.0"
